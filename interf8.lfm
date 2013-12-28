@@ -1,12 +1,12 @@
 object Form8: TForm8
-  Left = 22
+  Left = 67
   Height = 418
-  Top = 163
+  Top = 458
   Width = 464
   BorderStyle = bsSingle
   Caption = 'Информация из базы'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 418
+  ClientWidth = 464
   LCLVersion = '1.0.2.0'
   object Bevel3: TBevel
     Left = 8

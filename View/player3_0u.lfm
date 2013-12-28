@@ -1,0 +1,56 @@
+object vplayer: Tvplayer
+  Left = 118
+  Height = 497
+  Top = 115
+  Width = 744
+  AlphaBlend = True
+  AlphaBlendValue = 240
+  BorderStyle = bsToolWindow
+  Caption = 'vplayer'
+  ClientHeight = 497
+  ClientWidth = 744
+  Color = clBackground
+  OnClose = FormClose
+  OnCreate = FormCreate
+  LCLVersion = '1.0.2.0'
+  object Edit1: TEdit
+    Left = 0
+    Height = 23
+    Top = 472
+    Width = 592
+    Color = clBackground
+    Font.Color = clAqua
+    ParentFont = False
+    TabOrder = 0
+  end
+  object Button1: TButton
+    Left = 592
+    Height = 25
+    Top = 472
+    Width = 96
+    Caption = 'Enter'
+    Color = clMenuText
+    OnClick = Button1Click
+    TabOrder = 1
+  end
+  object Memo1: TMemo
+    Left = 0
+    Height = 472
+    Top = 0
+    Width = 744
+    Color = clMenuText
+    Font.Color = clAqua
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 2
+  end
+  object Button2: TButton
+    Left = 688
+    Height = 25
+    Top = 472
+    Width = 56
+    Caption = 'Clear'
+    OnClick = Button2Click
+    TabOrder = 3
+  end
+end

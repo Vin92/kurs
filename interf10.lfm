@@ -1,7 +1,7 @@
 object Form10: TForm10
-  Left = 391
+  Left = 1088
   Height = 70
-  Top = 245
+  Top = 685
   Width = 178
   AlphaBlend = True
   BorderStyle = bsNone

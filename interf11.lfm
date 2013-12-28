@@ -1,7 +1,7 @@
 object Form11: TForm11
-  Left = -3
+  Left = 42
   Height = 440
-  Top = 355
+  Top = 562
   Width = 746
   Caption = 'Редактор базы'
   ClientHeight = 440

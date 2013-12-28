@@ -9,7 +9,8 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, laz_synapse, Classes, player3_0u, interf, dvig, interf2, interf3,
   interf4, scaner_vPlayer, progress_p, U_settings, search_drive, iinterf7,
-  interf8, interf9, interf10, interf11, interf12;
+  interf8, interf9, interf10, interf11, interf12, interf13, interf7_1,
+vinplayer_extern_extension, u_settings_dll, u_id3_vin92;
 
 {$R *.res}
 //{$R manifest.rc}
@@ -29,6 +30,8 @@ begin
   Application.CreateForm(TForm9, Form9);
   Application.CreateForm(TForm11, Form11);
   Application.CreateForm(TForm12, Form12);
+  Application.CreateForm(TForm13, Form13);
+  Application.CreateForm(TForm14, Form14);
   Application.Run;
 end.
 

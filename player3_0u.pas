@@ -7,8 +7,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, bass, bassflac, inifiles, interf, interf2, {tags,} scaner_vplayer,
-  clipbrd, DateUtils, bassenc, mmsystem, B_ID3V1, HTTPSend, ssl_openssl,
-  spisok;
+  clipbrd, DateUtils, bassenc, mmsystem, B_ID3V1, interf13, HTTPSend, ssl_openssl,
+  spisok, LMessages, u_id3_vin92;
 
 type
 
@@ -23,6 +23,7 @@ type
     procedure Button2Click(Sender: TObject);
     procedure FormClose(Sender: TObject{; var CloseAction: TCloseAction});
     procedure FormCreate(Sender: TObject);
+    procedure FormShortCut(var Msg: TLMKey; var Handled: Boolean);
   private
     { private declarations }
   public
@@ -143,6 +144,8 @@ var
   //elbaza, elbazaStart, elbazaNeStart, next, neNext, elbaza_id_searh:uk;///////////////////////////////////////////////////////////
   spisok_baza, ochered_vospr, spisok_vospr:dSpisok;
   tek_source:byte;
+  rejim_internet_vospr:byte=0;
+  connecting_internet_vospr:byte=0;
   //
   n:shortint;
   hz:dword;
@@ -172,9 +175,10 @@ var
   vk_potok:load_vk_data;
 
   Counters:array [1..5] of integer;
-  id, text_mes:string;
+  id, text_mes, vk_soure_list, vk_soure_list_count:string;
   vk_load_run:boolean;
   vk_loadAudio_potok:T_vk_load_audio;
+
 
   tek_id_track:int64;
 
@@ -224,7 +228,7 @@ function eq_yatanowka_znachenij(nom:byte; zn:integer):integer;
 function set_vol(zn:single):single;
 procedure reinit(n0:shortint;hz0:dword);
 procedure chto_za_den;
-procedure internet_vospr(url:string);
+procedure internet_vospr(url:string; rejim:byte=0);
 procedure DoMeta();
 procedure  recording_odnaco;
 procedure play_id(num:word);
@@ -392,11 +396,25 @@ begin
 end;
 
 procedure T_vk_load_audio.Execute();//vk_load_audio_list
+var tmp, tmp1:String;
+
 begin
       stat_mes:='Грузим музыку... Лопатами.';
       Synchronize(@stat);
+
+      if vk_soure_list <> ' ' then
+      begin
+           tmp:=vk_soure_list;
+           tmp1:=vk_soure_list_count;
+           vk_soure_list:= ' ';
+      end
+      else
+      begin
+           tmp:=vk_user_id;
+           tmp1:='25';
+      end;
       s:=TStringList.Create;
-      HttpGetText('https://api.vk.com/method/audio.get.xml?oid='+vk_user_id+'&count=25&access_token='+access_token, s);//vplayer.memo1.Lines  26187536
+      HttpGetText('https://api.vk.com/method/audio.get.xml?oid='+tmp+'&count='+tmp1+'&access_token='+access_token, s);//vplayer.memo1.Lines  26187536
       //HttpGetText('https://api.vk.com/method/audio.get.xml?oid=54116806&count=25&access_token='+access_token, s);//vplayer.memo1.Lines  54116806
       pars_audio_list();
       s.free;
@@ -405,10 +423,19 @@ begin
 end;
 //Vk_mess//
 procedure vk_create_mess();
+var i:byte;
 begin
 
      id := inputbox('Пишем сообщение','Введите идентификатор пользователя','');
      text_mes := inputbox('Пишем сообщение','Напишите текст','');
+     insert('_',text_mes, 0);
+     while pos(' ', text_mes) <> 0 do
+     begin
+          i:=pos(' ', text_mes);
+          delete(text_mes, i, 1);
+          insert('%20', text_mes, i);
+     end;
+     delete(text_mes, 1,1);
      if (id <> '') and (text_mes <> '') then
      begin
           soobchenie('vinPlayer - VK', 'отправка сообщения пользователю: '+ id +' - ' + text_mes, 1800, true);
@@ -741,12 +768,12 @@ end;
 
 procedure vk_get_messages();
 begin
-     HttpGetText('https://api.vk.com/method/messages.get.xml?access_token='+access_token, vplayer.memo1.lines);
+     HttpGetText('https://api.vk.com/method/messages.get.xml?count=200&access_token='+access_token, vplayer.memo1.lines);
 end;
 
 procedure vk_get_send_messages();
 begin
-     HttpGetText('https://api.vk.com/method/messages.get.xml?out=1&access_token='+access_token, vplayer.memo1.lines);
+     HttpGetText('https://api.vk.com/method/messages.get.xml?out=1&count=200&access_token='+access_token, vplayer.memo1.lines);
 end;
 
 procedure vk_load_audio_list();
@@ -1157,13 +1184,18 @@ end;
 
 procedure potok_load.Execute;
 begin
+
+     connecting_internet_vospr:=1;
     potok := BASS_StreamCreateURL (PChar(urll),0,0,nil,nil);
+     connecting_internet_vospr:=0;
     Synchronize(@internet_vospr_end_load);
 end;
 
-procedure internet_vospr(url:string);
+procedure internet_vospr(url:string; rejim:byte=0);
 begin
-     PlaySound('res/sig1v2.wav',0,SND_ASYNC);
+     rejim_internet_vospr:=rejim;
+     if rejim_internet_vospr=0 then
+                                  PlaySound('res/sig1v2.wav',0,SND_ASYNC);
      urll:=url;
      stop;
      BASS_StreamFree(potok);
@@ -1177,7 +1209,8 @@ begin
     if potok = 0 then soobchenie('vinPlayer - интернет','Ошибочка вышла...', 400, false)
     else
     begin
-    bool_internet := true;
+         if rejim_internet_vospr=0 then
+                          bool_internet := true;
     eqvol;
     oshibki;
     play;
@@ -1224,7 +1257,10 @@ begin
           if baza_el.source = 1 then
           begin
                stop;
-               soobchenie('VK _Audio','Аудиозапись вк', 500, false);
+               //soobchenie('VK _Audio','Аудиозапись вк', 500, false);
+
+               if connecting_internet_vospr=0 then
+                  internet_vospr(baza_el.url, 1);
           end;
      end;
 end;
@@ -1426,6 +1462,8 @@ end;
 
 procedure init_player;//(n:shortint,hz:dword);
 begin
+
+     randomize;
    vk_load_run:=false;
    vol := 0.5;
    global_time_sec:=40;
@@ -1470,6 +1508,8 @@ end;
 procedure dispose_baza;
 begin
    spisok_baza.del_all();
+   ochered_vospr.del_all();
+   spisok_vospr.del_all();
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1846,16 +1886,31 @@ procedure vospr_next;
 var tmp:TData_Ds;
 begin
      //tmp:=spisok_baza.Next();ochered_vospr
+
+
+     //tmp:=ochered_vospr.el[tek_id_track-1];
+
      tmp:=ochered_vospr.Next();
      if tmp.name_file <> 'пусто' then
      begin
-          tek_source:=tmp.source;
-          filewav:= tmp.put + tmp.name_file;
-          stop;
-          filewavPChar:=PChar(filewav);
-          vospr;
-          napr_prok:=true;
-          play;
+          if (tmp.source = 0) or (tmp.source=2) then
+          begin
+               tek_source:=tmp.source;
+               filewav:= tmp.put + tmp.name_file;
+               stop;
+               filewavPChar:=PChar(filewav);
+               vospr;
+               napr_prok:=true;
+               play;
+          end;
+          if tmp.source = 1 then
+          begin
+               stop;
+               //soobchenie('VK _Audio','Аудиозапись вк', 500, false);
+
+               if connecting_internet_vospr=0 then
+                  internet_vospr(tmp.url, 1);
+          end;
      end;
 end;
 
@@ -1863,17 +1918,31 @@ procedure vospr_neNext;
 var tmp:TData_Ds;
 begin
      //tmp:=spisok_baza.NeNext();
+
+     //tmp:=ochered_vospr.el[tek_id_track+1];
+
      tmp:=ochered_vospr.NeNext();
      if tmp.name_file <> 'пусто' then
      begin
-          tek_source:=tmp.source;
-          filewav:= tmp.put + tmp.name_file;
-          stop;
-          filewavPChar:=PChar(filewav);
-          vospr;
-          napr_prok:=true;
-          play;
-     end;
+          if (tmp.source = 0) or (tmp.source=2) then
+          begin
+               tek_source:=tmp.source;
+               filewav:= tmp.put + tmp.name_file;
+               stop;
+               filewavPChar:=PChar(filewav);
+               vospr;
+               napr_prok:=true;
+               play;
+          end;
+          if tmp.source = 1 then
+          begin
+               stop;
+               //soobchenie('VK _Audio','Аудиозапись вк', 500, false);
+
+               if connecting_internet_vospr=0 then
+                  internet_vospr(tmp.url, 1);
+          end;
+    end;
 end;
 
 procedure vizual;
@@ -1905,6 +1974,7 @@ end;
 
 procedure Proc;
 var  baza_el:TData_dS;
+     id3_name, id3_artist_, id3_album:string;
 begin
      soobchenie('Консоль', 'Команда "' + in_comm + '".', 400, true);
      case in_comm of
@@ -2175,6 +2245,12 @@ begin
              end;
            'spisok_next':spisok_baza.Next();
            'spisok_nenext':spisok_baza.NeNext();
+           'pogoda':soobchenie('Яндекс погода', 'Гатчина: Завтра +1, облачно', 400, true);
+           'get_id3':
+             begin
+                  vplayer.memo1.lines.Add(inttostr(get_id3_tags(filewav, id3_name, id3_artist_, id3_album)));
+                  vplayer.memo1.lines.Add('Название: "' + id3_name + '", Артист: "'+id3_artist_+'", Альбом"' + id3_album + '"');
+             end;
            else soobchenie('Консоль', 'Что за "' + in_comm + '"?', 400, true);
            end;
            in_comm:='';
@@ -2325,6 +2401,45 @@ begin
    spisok_vospr:=dSpisok.create();
 end;
 
+procedure Tvplayer.FormShortCut(var Msg: TLMKey; var Handled: Boolean);  //обработка не очень горячих клавиш
+begin
+     //soobchenie('vinPlayer(0)', 'Вы что-то нажали:' + inttostr(Msg.CharCode), 500, false);
+   if otl then
+      memo1.lines.Add('|' + inttostr(Msg.CharCode) + '|');
+   if (Msg.CharCode = 13) and (edit1.text<> '') then
+   begin
+      in_comm:=edit1.text;
+      memo1.lines.Add('--> ' + edit1.text);
+      Proc;
+      edit1.text:= '';
+   end;
+
+   if (Msg.CharCode = 112) and otl then
+   begin
+      help_cons();
+   end;
+
+   if (Msg.CharCode = 179) then
+   begin
+      play_stop;
+   end;
+
+   if (Msg.CharCode = 178) then
+   begin
+      stop;
+   end;
+
+   if (Msg.CharCode = 177) then
+   begin
+      vospr_neNext;
+   end;
+
+   if (Msg.CharCode = 176) then
+   begin
+      vospr_Next;
+   end;
+end;
+
 procedure Tvplayer.Button1Click(Sender: TObject);
 begin
       //edit1.text:= edit1.text + ' ';
@@ -2336,8 +2451,9 @@ end;
 
 procedure Tvplayer.Button2Click(Sender: TObject);
 begin
-   while vplayer.memo1.lines.Count <> 0 do
-         vplayer.Memo1.Lines.Delete(0);
+   //while vplayer.memo1.lines.Count <> 0 do
+         //vplayer.Memo1.Lines.Delete(0);
+    vplayer.Memo1.Lines.Clear;
 end;
 
 end.

@@ -1,13 +1,13 @@
 object Form12: TForm12
-  Left = 613
-  Height = 304
-  Top = 175
+  Left = 670
+  Height = 303
+  Top = 699
   Width = 783
   AllowDropFiles = True
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Редактор слов песни - vinPlayer'
-  ClientHeight = 304
+  ClientHeight = 303
   ClientWidth = 783
   OnCreate = FormCreate
   OnDropFiles = FormDropFiles

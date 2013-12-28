@@ -33,6 +33,13 @@ type
             index:word;
             _count:integer;
             //el:el_dSpisok;
+            protected
+
+            function Get(_Index: word): TData_dS;
+            procedure Put(_Index: word; const Data: TData_dS);
+
+
+
             public
             constructor create();
             procedure add(nf:string);
@@ -44,6 +51,7 @@ type
             function Next():TData_dS;
             function NeNext():TData_dS;
             function tek_el():TData_dS;
+            property el[_Index:word]:TData_dS read Get write Put; default;
             function gostart():TData_dS;
             function goend():TData_dS;
             function count():integer;
@@ -52,6 +60,45 @@ type
     end;
 
 implementation
+
+
+function dSpisok.Get(_Index: word): TData_dS;
+var tmp:TData_dS;
+    search:boolean;
+    i:word=0;
+begin
+     goend();
+     if _index<>0 then
+     begin
+          search:=true;
+          while (tek<> _begin) and search do
+          begin
+               Next();
+               i+=1;
+               if i = _index then search:=false;
+          end;
+     end;
+     tmp:=tek_el();
+     Get:=tmp;
+end;
+
+procedure dSpisok.Put(_Index: word; const Data: TData_dS);
+begin
+     {goend();
+     if _index<>0 then
+     begin
+          search:=true;
+          while (tek<> _begin) and search do
+          begin
+               Next();
+               i+=1;
+               if i = _index then search:=false;
+          end;
+     end;
+     tmp:=tek_el();
+     Get:=tmp;}
+
+end;
 
 procedure dSpisok.add(d:TData_dS);
 var temp_uk:uk;

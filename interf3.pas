@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   Buttons, Menus, StdCtrls, windows, player3_0u, interf4, interf, interf2, bass,
   scaner_vPlayer, progress_p, U_settings, iinterf7, interf9, interf11, interf12,
-  types;
+  types, vinPlayer_extern_extension, u_settings_dll, LMessages;
 
 const
 count=12; //число вершин в полигоне
@@ -29,6 +29,12 @@ type
     internet_radio_open: TMenuItem;
     internet_radio_rec: TMenuItem;
     Label1: TLabel;
+    M_zan: TMenuItem;
+    M_vk_load_list_param: TMenuItem;
+    M_dll_settings: TMenuItem;
+    M_vk_load_audio: TMenuItem;
+    M_extern_dll: TMenuItem;
+    M_version_osn_dll: TMenuItem;
     M_b: TMenuItem;
     M_vospr: TMenuItem;
     M_povt: TMenuItem;
@@ -70,6 +76,7 @@ type
     procedure FormClose(Sender: TObject{; var CloseAction: TCloseAction});
     procedure FormCreate(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of String);
+    procedure FormShortCut(var Msg: TLMKey; var Handled: Boolean);
     procedure Image2Click(Sender: TObject);
     procedure Image4Click(Sender: TObject);
     {procedure Image11Click(Sender: TObject);
@@ -84,6 +91,7 @@ type
     procedure M_bClick(Sender: TObject);
     procedure M_consoleClick(Sender: TObject);
     procedure M_disp_messClick(Sender: TObject);
+    procedure M_dll_settingsClick(Sender: TObject);
     procedure M_exitClick(Sender: TObject);
     procedure M_music_bazaClick(Sender: TObject);
     procedure M_open_fileClick(Sender: TObject);
@@ -99,10 +107,14 @@ type
     procedure M_sort_po_ispClick(Sender: TObject);
     procedure M_sort_po_isp_tudaClick(Sender: TObject);
     procedure M_sozd_bazaClick(Sender: TObject);
+    procedure M_version_osn_dllClick(Sender: TObject);
     procedure M_vkClick(Sender: TObject);
     procedure M_vk_inClick(Sender: TObject);
+    procedure M_vk_load_audioClick(Sender: TObject);
+    procedure M_vk_load_list_paramClick(Sender: TObject);
     procedure m_vk_mes_writeClick(Sender: TObject);
     procedure M_vptClick(Sender: TObject);
+    procedure M_zanClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     //procedure open_f;
@@ -126,10 +138,28 @@ var
   vpt_temp_i:integer;
   m_vibor:byte;
   m_vib_beg, m_vib_beg_t, m_vib_vert, m_light_vert:real;
+  rej_zan:boolean=false;
+
+function pchar_to_str(zn0:string):string;
 
 implementation
 
 {$R *.lfm}
+
+function pchar_to_str(zn0:string):string;
+var
+  i:byte;
+  tmp:string;
+begin
+     tmp:='';
+     i:=1;
+     while zn0[i]<>#0 do
+     begin
+          tmp+=zn0[i];
+          i+=1;
+     end;
+     pchar_to_str:=tmp;
+end;
 
 { TForm3 }
 
@@ -203,12 +233,13 @@ end;
 
 procedure TForm3.FormDropFiles(Sender: TObject; const FileNames: array of String);
 var i, j:integer;
-  str_tmp:string;
+  str_tmp, str_tmp_dll:string;
   vpt_file:boolean;
 begin
      //kol:=Length(FileNames);
      vpt_file:=false;
      str_tmp:='';
+     str_tmp_dll:='';
      j:=0;
      //soobchenie('vinPlayer +' + IntToStr(kol), 'Вы что-то уронили!', 500, false);
      for i:=0 to High(FileNames) do
@@ -234,6 +265,12 @@ begin
                vpt_file:=true;
           end;
 
+          if pos('.dll',utf8tosys(FileNames[i])) <> 0 then
+          begin
+               str_tmp_dll:=FileNames[i];
+               load_dll(str_tmp_dll);
+          end;
+
      end;
      if str_tmp <> '' then
      begin
@@ -247,9 +284,17 @@ begin
      end
      else
      begin
-          soobchenie('vinPlayer', 'Вы что-то уронили!', 500, false);
+          if str_tmp_dll = '' then
+          begin
+               soobchenie('vinPlayer', 'Вы что-то уронили!', 500, false);
+          end;
      end;
      if vpt_file then load_vpt;
+end;
+
+procedure TForm3.FormShortCut(var Msg: TLMKey; var Handled: Boolean);
+begin
+     soobchenie('vinPlayer(3)', 'Вы что-то нажали:' + inttostr(Msg.CharCode), 500, false);
 end;
 
 procedure TForm3.Image2Click(Sender: TObject);
@@ -437,6 +482,11 @@ begin
      soobchenie('vinPlayer', 'Щас что-то грузится', 900, true)
 end;
 
+procedure TForm3.M_dll_settingsClick(Sender: TObject);
+begin
+     Form14.visible:=true;
+end;
+
 procedure TForm3.M_exitClick(Sender: TObject);
 begin
   //close;
@@ -554,6 +604,13 @@ begin
   else soobchenie('vinPlayer', 'Дождитесь окончания сканирования', 900, true);
 end;
 
+procedure TForm3.M_version_osn_dllClick(Sender: TObject);
+var tmp:string;
+begin
+      tmp:= pchar_to_str(vpee_get_version());
+     soobchenie('Дополнения','Версия основной библиотеки: '+tmp+'.', 900, false);
+end;
+
 procedure TForm3.M_vkClick(Sender: TObject);
 begin
 
@@ -578,6 +635,29 @@ begin
      end;
 end;
 
+procedure TForm3.M_vk_load_audioClick(Sender: TObject);
+begin
+     vk_loadAudio_potok:=T_vk_load_audio.Create(False);
+end;
+
+procedure TForm3.M_vk_load_list_paramClick(Sender: TObject);
+var code:string;
+begin
+     //////////vk_soure_list, vk_soure_list_count:string;
+
+     code := inputbox('Загрузить список воспроизведения.','Введите id группы или пользователя','Сюда введите');
+     if (code <> 'Сюда введите') and (code <> '') then
+     begin
+          vk_soure_list:=code;
+          code := inputbox('Загрузить список воспроизведения.','Введите количество аудиозаписей','25');
+          if (code <> '25') and (code <> '') then
+          begin
+               vk_soure_list_count:=code;
+               vk_loadAudio_potok:=T_vk_load_audio.Create(False);
+          end;
+     end;
+end;
+
 procedure TForm3.m_vk_mes_writeClick(Sender: TObject);
 begin
      vk_create_mess();
@@ -586,6 +666,32 @@ end;
 procedure TForm3.M_vptClick(Sender: TObject); //текст песни
 begin
      load_vpt;
+end;
+
+procedure TForm3.M_zanClick(Sender: TObject);
+begin
+     if not rej_zan then
+     begin
+          Form3.Visible:=false;
+          vplayer.Visible:=false;
+          rej_zan:=true;
+          Form3.M_zan.Caption:='Вылезти';
+          case round(random()*2) of
+               0: soobchenie('vinPlayer', 'Тсс... меня тут нет.', 800, false);
+               1: soobchenie('vinPlayer', 'Я буду рядом..', 800, false);
+               2: soobchenie('vinPlayer', 'Исчез', 800, false);
+
+
+
+          end;
+     end
+     else
+     begin
+          Form3.Visible:=true;
+          vplayer.Visible:=true;
+          rej_zan:=false;
+          Form3.M_zan.Caption:='Заныкаться';
+     end;
 end;
 
 

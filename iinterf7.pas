@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, Menus, {CheckLst,} windows, player3_0u, interf, {interf8,} types,
-  spisok;
+  spisok, interf7_1;
 
 const
 count=9; //число вершин в полигоне
@@ -28,6 +28,7 @@ type
     Image11: TImage;
     Image12: TImage;
     Image13: TImage;
+    Image14: TImage;
     Image2: TImage;
     Image24: TImage;
     Image3: TImage;
@@ -99,14 +100,15 @@ var
   nach_pl, tek_razn:integer;
   mouse:TPoint;
   mousex_stab_r1, yskor:array [1..10] of real;
-  mousex_stab, poloj_x, pl_kadr:array [1..10] of integer;
+  mousex_stab, poloj_x, pl_kadr, pl_tek_x, pl_tek_y:array [1..10] of integer;
   identificator_track, new_identificator_track:array [1..10] of int64;
   play_progress:real;
   line_1, old_line_1:array [1..10] of string[48];
   line_2, old_line_2:array [1..10] of string[71];
+  draw_strings:array[1..20] of string [71];
   napr_obn:boolean;
-  speed_stab:real=5.0;//1.5; //5
-  speed_yskor:real=3.5;//23.0;   //3.5
+  speed_stab:real=4.3;//1.5; //5
+  speed_yskor:real=10.5;//23.0;   //3.5
   sh_kadr:byte=0;
   pl_down:byte=0;
 
@@ -115,7 +117,8 @@ procedure obnForm7;
 procedure obnForm7t;
 procedure load_spisok(n:boolean);
 procedure serch_and_load_spisok;
-procedure draw;
+//procedure draw(Index: PtrInt; Data: Pointer; Item: TMultiThreadProcItem);
+procedure draw();
 
 function name_f(z1:string):string;
 
@@ -146,9 +149,16 @@ begin
 end;
 
 
-
 procedure TForm7.FormCreate(Sender: TObject);
 begin
+     //new_bitmaps();
+
+     {_plitka:=Form7.image2.Picture.Bitmap;
+     _fon:=Form7.image1.Picture.Bitmap;
+
+
+     _picture.Width:=form7.Width;
+     _picture.Height:=form7.Height;}
      move_pl[1]:=0;
      move_pl[2]:=0;
      move_pl[3]:=0;
@@ -232,6 +242,26 @@ begin
      obnov_line[8]:=0;
      obnov_line[9]:=0;
      obnov_line[10]:=0;
+     pl_tek_x[1]:=40;
+     pl_tek_x[2]:=40;
+     pl_tek_x[3]:=40;
+     pl_tek_x[4]:=40;
+     pl_tek_x[5]:=40;
+     pl_tek_x[6]:=40;
+     pl_tek_x[7]:=40;
+     pl_tek_x[8]:=40;
+     pl_tek_x[9]:=40;
+     pl_tek_x[10]:=40;
+     pl_tek_y[1]:=48;
+     pl_tek_y[2]:=104;
+     pl_tek_y[3]:=160;
+     pl_tek_y[4]:=216;
+     pl_tek_y[5]:=272;
+     pl_tek_y[6]:=328;
+     pl_tek_y[7]:=384;
+     pl_tek_y[8]:=440;
+     pl_tek_y[9]:=496;
+     pl_tek_y[10]:=552;
      image24.top:=0;
      image24.left:=330;
      Image13.top:=0;
@@ -265,6 +295,7 @@ begin
           pl_down:=1;
           move_pl[1]:=100;
           tek_razn:=X - Form7.Image2.left;
+          //tek_razn:=X - pl_tek_x[1];
      end;
 
      if (Y > 104) and (Y<160) then //2
@@ -272,6 +303,7 @@ begin
           pl_down:=2;
           move_pl[2]:=100;
           tek_razn:=X - Form7.Image3.left;
+          //tek_razn:=X - pl_tek_x[2];
      end;
 
      if (Y > 160) and (Y<216) then //3
@@ -279,6 +311,7 @@ begin
           pl_down:=3;
           move_pl[3]:=100;
           tek_razn:=X - Form7.Image4.left;
+          //tek_razn:=X - pl_tek_x[3];
      end;
 
      if (Y > 216) and (Y<272) then //4
@@ -286,6 +319,7 @@ begin
           pl_down:=4;
           move_pl[4]:=100;
           tek_razn:=X - Form7.Image5.left;
+          //tek_razn:=X - pl_tek_x[4];
      end;
 
      if (Y > 272) and (Y<328) then //5
@@ -293,6 +327,7 @@ begin
           pl_down:=5;
           move_pl[5]:=100;
           tek_razn:=X - Form7.Image6.left;
+          //tek_razn:=X - pl_tek_x[5];
      end;
 
      if (Y > 328) and (Y<384) then //6
@@ -300,6 +335,7 @@ begin
           pl_down:=6;
           move_pl[6]:=100;
           tek_razn:=X - Form7.Image7.left;
+          //tek_razn:=X - pl_tek_x[6];
      end;
 
      if (Y > 384) and (Y<440) then //7
@@ -307,6 +343,7 @@ begin
           pl_down:=7;
           move_pl[7]:=100;
           tek_razn:=X - Form7.Image8.left;
+          //tek_razn:=X - pl_tek_x[7];
      end;
 
      if (Y > 440) and (Y<496) then //8
@@ -314,6 +351,7 @@ begin
           pl_down:=8;
           move_pl[8]:=100;
           tek_razn:=X - Form7.Image9.left;
+          //tek_razn:=X - pl_tek_x[8];
      end;
 
      if (Y > 496) and (Y<552) then //9
@@ -321,6 +359,7 @@ begin
           pl_down:=9;
           move_pl[9]:=100;
           tek_razn:=X - Form7.Image10.left;
+          //tek_razn:=X - pl_tek_x[9];
      end;
 
      if (Y > 552) and (Y<608) then //10
@@ -328,6 +367,7 @@ begin
           pl_down:=10;
           move_pl[10]:=100;
           tek_razn:=X - Form7.Image11.left;
+          //tek_razn:=X - pl_tek_x[10];
      end;
 
      //tek_razn:=X;//mouse.X - Form7.Image2.left;
@@ -535,6 +575,26 @@ begin
                end;
           end;
      end;
+
+     {for i:=1 to 10 do
+     begin
+          if move_pl[i]=100 then
+          begin
+               poloj_x[i]:=mouse.X - tek_razn;
+          end;
+
+          if obnov_line[i]=0 then
+          begin
+               tmp_obn:=mousex_stab_r1[i] - poloj_x[i];
+               mousex_stab_r1[i] -= (tmp_obn)/speed_stab;
+          end
+          else
+          begin
+               draw_strings[i]:=old_line_1[i];
+               draw_strings[i+1]:=old_line_2[i];
+          end;
+          mousex_stab[i]:=round(mousex_stab_r1[i]);
+     end;}
 
 
      if move_pl[1]=100 then
@@ -779,6 +839,7 @@ begin
      //if sh_kadr >3 then
      //begin
           //sh_kadr:=0;
+          //ProcThreadPool.DoParallel(@draw,1,10,nil);
           draw;
      //end;
      //if play_spisok then pause;
@@ -798,16 +859,30 @@ begin
      end; }
 end;
 
-procedure draw;
+procedure draw();
+//procedure draw(Index: PtrInt; Data: Pointer; Item: TMultiThreadProcItem);
+//var i:byte;
 begin
-     if mousex_stab[1]<> Form7.Image2.left then
+     {_picture.Canvas.Draw(0,0,_fon);
+     for i:=1 to 10 do
      begin
+          pl_tek_x[i]:=mousex_stab[i];
+          _picture.Canvas.Draw(pl_tek_x[i],pl_tek_y[i],_plitka);
+     end;
+
+     form7.Image1.Canvas.Draw(0, 0, _picture);}
+     //case index of
+     if mousex_stab[1]<> Form7.Image2.left then
+     //1:
+     begin
+          //TThread.Synchronize(@tab_1);
           Form7.Image2.left:=mousex_stab[1];
           Form7.label1.left:=Form7.Image2.left + 10;
           Form7.label2.left:=Form7.Image2.left + 50;
      end;
 
      if mousex_stab[2]<> Form7.Image3.left then
+     //2:
      begin
           Form7.Image3.left:=mousex_stab[2];
           Form7.label3.left:=Form7.Image3.left + 10;
@@ -815,6 +890,7 @@ begin
      end;
 
      if mousex_stab[3]<> Form7.Image4.left then
+     //3:
      begin
           Form7.Image4.left:=mousex_stab[3];
           Form7.label5.left:=Form7.Image4.left + 10;
@@ -822,6 +898,7 @@ begin
      end;
 
      if mousex_stab[4]<> Form7.Image5.left then
+     //4:
      begin
           Form7.Image5.left:=mousex_stab[4];
           Form7.label7.left:=Form7.Image5.left + 10;
@@ -829,6 +906,7 @@ begin
      end;
 
      if mousex_stab[5]<> Form7.Image6.left then
+     //5:
      begin
           Form7.Image6.left:=mousex_stab[5];
           Form7.label9.left:=Form7.Image6.left + 10;
@@ -836,6 +914,7 @@ begin
      end;
 
      if mousex_stab[6]<> Form7.Image7.left then
+     //6:
      begin
           Form7.Image7.left:=mousex_stab[6];
           Form7.label11.left:=Form7.Image7.left + 10;
@@ -843,6 +922,7 @@ begin
      end;
 
      if mousex_stab[7]<> Form7.Image8.left then
+     //7:
      begin
           Form7.Image8.left:=mousex_stab[7];
           Form7.label13.left:=Form7.Image8.left + 10;
@@ -850,6 +930,7 @@ begin
      end;
 
      if mousex_stab[8]<> Form7.Image9.left then
+     //8:
      begin
           Form7.Image9.left:=mousex_stab[8];
           Form7.label15.left:=Form7.Image9.left + 10;
@@ -857,6 +938,7 @@ begin
      end;
 
      if mousex_stab[9]<> Form7.Image10.left then
+     //9:
      begin
           Form7.Image10.left:=mousex_stab[9];
           Form7.label17.left:=Form7.Image10.left + 10;
@@ -864,11 +946,13 @@ begin
      end;
 
      if mousex_stab[10]<> Form7.Image11.left then
+     //10:
      begin
           Form7.Image11.left:=mousex_stab[10];
           Form7.label19.left:=Form7.Image11.left + 10;
           Form7.label20.left:=Form7.Image11.left + 50;
      end;
+     //end;
 
 end;
 

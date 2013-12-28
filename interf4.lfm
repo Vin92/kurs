@@ -1,7 +1,7 @@
 object Form4: TForm4
-  Left = 91
+  Left = 1243
   Height = 91
-  Top = 255
+  Top = 543
   Width = 661
   AlphaBlend = True
   AlphaBlendValue = 236

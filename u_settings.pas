@@ -27,6 +27,9 @@ type
     Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -51,6 +54,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure CheckBox1Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Label1Click(Sender: TObject);
     procedure TrackBar10Change(Sender: TObject);
     procedure TrackBar11Change(Sender: TObject);
     procedure TrackBar1Change(Sender: TObject);
@@ -117,6 +121,11 @@ begin
   Form6.TrackBar11.position := round(vol * 100);
   form6.label12.Caption := 'Громкость: ' + inttostr(round(vol * 100));
   form6.CheckBox1.Checked:=cv;
+end;
+
+procedure TForm6.Label1Click(Sender: TObject);
+begin
+
 end;
 
 procedure TForm6.BitBtn1Click(Sender: TObject); //закрытие настроек

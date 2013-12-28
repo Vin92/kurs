@@ -1,0 +1,128 @@
+object Form11: TForm11
+  Left = -3
+  Height = 440
+  Top = 355
+  Width = 746
+  Caption = 'Редактор базы'
+  ClientHeight = 440
+  ClientWidth = 746
+  OnClose = FormClose
+  OnCreate = FormCreate
+  LCLVersion = '1.0.2.0'
+  object ListBox1: TListBox
+    Left = 0
+    Height = 440
+    Top = 0
+    Width = 296
+    ItemHeight = 0
+    OnClick = ListBox1Click
+    TabOrder = 0
+  end
+  object Button1: TButton
+    Left = 640
+    Height = 25
+    Top = 0
+    Width = 107
+    Caption = 'Загрузить'
+    OnClick = Button1Click
+    TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 637
+    Height = 25
+    Top = 200
+    Width = 107
+    Caption = 'Сохранить'
+    OnClick = Button2Click
+    TabOrder = 2
+  end
+  object Label2: TLabel
+    Left = 304
+    Height = 16
+    Top = 56
+    Width = 78
+    Caption = 'Исполнитель:'
+    ParentColor = False
+  end
+  object Edit1: TEdit
+    Left = 296
+    Height = 23
+    Top = 72
+    Width = 448
+    TabOrder = 3
+    Text = ' '
+  end
+  object Label3: TLabel
+    Left = 304
+    Height = 16
+    Top = 104
+    Width = 56
+    Caption = 'Название:'
+    ParentColor = False
+  end
+  object Edit2: TEdit
+    Left = 296
+    Height = 23
+    Top = 120
+    Width = 448
+    TabOrder = 4
+    Text = ' '
+  end
+  object Label4: TLabel
+    Left = 304
+    Height = 16
+    Top = 152
+    Width = 48
+    Caption = 'Альбом:'
+    ParentColor = False
+  end
+  object Edit3: TEdit
+    Left = 296
+    Height = 23
+    Top = 168
+    Width = 448
+    TabOrder = 5
+    Text = ' '
+  end
+  object CheckBox1: TCheckBox
+    Left = 319
+    Height = 19
+    Top = 200
+    Width = 57
+    Caption = 'Копия.'
+    TabOrder = 6
+  end
+  object CheckBox2: TCheckBox
+    Left = 480
+    Height = 19
+    Top = 200
+    Width = 63
+    Caption = 'Музыка'
+    TabOrder = 7
+  end
+  object Button3: TButton
+    Left = 504
+    Height = 25
+    Top = 232
+    Width = 240
+    Caption = 'Добавить в список воспроизведения'
+    OnClick = Button3Click
+    TabOrder = 8
+  end
+  object Label5: TLabel
+    Left = 296
+    Height = 16
+    Top = 0
+    Width = 27
+    Caption = 'Путь'
+    ParentColor = False
+  end
+  object Edit4: TEdit
+    Left = 296
+    Height = 23
+    Top = 24
+    Width = 448
+    TabOrder = 9
+    Text = ' '
+  end
+end

@@ -1,0 +1,17 @@
+object Form13: TForm13
+  Left = 31
+  Height = 427
+  Top = 134
+  Width = 702
+  AlphaBlend = True
+  AlphaBlendValue = 200
+  BorderStyle = bsNone
+  Caption = 'Form13'
+  OnCreate = FormCreate
+  LCLVersion = '1.0.2.0'
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = Timer1Timer
+  end
+end

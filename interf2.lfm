@@ -1,7 +1,7 @@
 object Form2: TForm2
-  Left = 7
+  Left = 23
   Height = 273
-  Top = 295
+  Top = 660
   Width = 325
   AlphaBlend = True
   AlphaBlendValue = 200

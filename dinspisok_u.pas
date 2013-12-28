@@ -16,6 +16,7 @@ type
     Button10: TButton;
     Button11: TButton;
     Button12: TButton;
+    Button13: TButton;
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
@@ -25,11 +26,13 @@ type
     Button8: TButton;
     Button9: TButton;
     Edit1: TEdit;
+    Edit2: TEdit;
     ListBox1: TListBox;
     Memo1: TMemo;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
+    procedure Button13Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -39,6 +42,7 @@ type
     procedure Button7Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure Button9Click(Sender: TObject);
+    procedure Edit2Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
   private
@@ -123,6 +127,13 @@ begin
      s.add_p(form1.Edit1.Text);
 end;
 
+procedure TForm1.Button13Click(Sender: TObject);
+var t:TData_dS;
+begin
+     t:=s.el[10];
+     memo1.Lines.Add(t.name_file + ' index');
+end;
+
 procedure TForm1.Button2Click(Sender: TObject);
 var t:TData_dS;
 begin
@@ -172,6 +183,11 @@ end;
 procedure TForm1.Button9Click(Sender: TObject);
 begin
      s.del_all();
+end;
+
+procedure TForm1.Edit2Change(Sender: TObject);
+begin
+
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

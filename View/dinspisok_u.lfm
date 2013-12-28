@@ -1,0 +1,146 @@
+object Form1: TForm1
+  Left = 19
+  Height = 333
+  Top = 131
+  Width = 939
+  Caption = 'Form1'
+  ClientHeight = 333
+  ClientWidth = 939
+  OnCreate = FormCreate
+  LCLVersion = '1.0.2.0'
+  object Memo1: TMemo
+    Left = 472
+    Height = 274
+    Top = 0
+    Width = 464
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 0
+  end
+  object ListBox1: TListBox
+    Left = 0
+    Height = 301
+    Top = 0
+    Width = 472
+    ItemHeight = 0
+    OnClick = ListBox1Click
+    TabOrder = 1
+  end
+  object Button1: TButton
+    Left = 472
+    Height = 25
+    Top = 276
+    Width = 88
+    Caption = 'открыть'
+    OnClick = Button1Click
+    TabOrder = 2
+  end
+  object Button2: TButton
+    Left = 560
+    Height = 25
+    Top = 276
+    Width = 40
+    Caption = '<--'
+    OnClick = Button2Click
+    TabOrder = 3
+  end
+  object Button3: TButton
+    Left = 640
+    Height = 25
+    Top = 275
+    Width = 40
+    Caption = '-->'
+    OnClick = Button3Click
+    TabOrder = 4
+  end
+  object Edit1: TEdit
+    Left = 192
+    Height = 23
+    Top = 304
+    Width = 280
+    TabOrder = 5
+    Text = 'Edit1'
+  end
+  object Button4: TButton
+    Left = 88
+    Height = 25
+    Top = 304
+    Width = 104
+    Caption = 'добавить строку'
+    OnClick = Button4Click
+    TabOrder = 6
+  end
+  object Button5: TButton
+    Left = 600
+    Height = 25
+    Top = 276
+    Width = 40
+    Caption = '='
+    OnClick = Button5Click
+    TabOrder = 7
+  end
+  object Button6: TButton
+    Left = 688
+    Height = 25
+    Top = 275
+    Width = 48
+    Caption = '<<<<'
+    OnClick = Button6Click
+    TabOrder = 8
+  end
+  object Button7: TButton
+    Left = 736
+    Height = 26
+    Top = 275
+    Width = 48
+    Caption = '>>>>'
+    OnClick = Button7Click
+    TabOrder = 9
+  end
+  object Button8: TButton
+    Left = 784
+    Height = 25
+    Top = 275
+    Width = 40
+    Caption = 'del'
+    OnClick = Button8Click
+    TabOrder = 10
+  end
+  object Button9: TButton
+    Left = 824
+    Height = 25
+    Top = 275
+    Width = 48
+    Caption = 'del all'
+    OnClick = Button9Click
+    TabOrder = 11
+  end
+  object Button10: TButton
+    Left = 0
+    Height = 25
+    Top = 304
+    Width = 86
+    Caption = 'Обновить'
+    OnClick = Button10Click
+    TabOrder = 12
+  end
+  object Button11: TButton
+    Left = 472
+    Height = 25
+    Top = 303
+    Width = 80
+    Caption = 'add d'
+    OnClick = Button11Click
+    TabOrder = 13
+  end
+  object Button12: TButton
+    Left = 552
+    Height = 25
+    Top = 303
+    Width = 75
+    Caption = 'add p'
+    OnClick = Button12Click
+    TabOrder = 14
+  end
+end

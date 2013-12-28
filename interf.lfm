@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 45
+  Left = 127
   Height = 93
-  Top = 528
+  Top = 909
   Width = 369
   AlphaBlend = True
   AlphaBlendValue = 170

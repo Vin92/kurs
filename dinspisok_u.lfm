@@ -1,11 +1,11 @@
 object Form1: TForm1
   Left = 19
-  Height = 333
+  Height = 433
   Top = 131
-  Width = 939
+  Width = 1006
   Caption = 'Form1'
-  ClientHeight = 333
-  ClientWidth = 939
+  ClientHeight = 433
+  ClientWidth = 1006
   OnCreate = FormCreate
   LCLVersion = '1.0.2.0'
   object Memo1: TMemo
@@ -142,5 +142,23 @@ object Form1: TForm1
     Caption = 'add p'
     OnClick = Button12Click
     TabOrder = 14
+  end
+  object Button13: TButton
+    Left = 672
+    Height = 42
+    Top = 304
+    Width = 99
+    Caption = 'index               /'
+    OnClick = Button13Click
+    TabOrder = 16
+  end
+  object Edit2: TEdit
+    Left = 715
+    Height = 23
+    Top = 312
+    Width = 48
+    OnChange = Edit2Change
+    TabOrder = 15
+    Text = '0'
   end
 end

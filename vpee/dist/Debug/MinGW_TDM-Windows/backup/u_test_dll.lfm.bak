@@ -1,0 +1,228 @@
+object Form1: TForm1
+  Left = 164
+  Height = 278
+  Top = 255
+  Width = 583
+  Caption = 'TEST DLL VinPlayer - Vin92.software:)'
+  ClientHeight = 278
+  ClientWidth = 583
+  OnCreate = FormCreate
+  LCLVersion = '1.0.2.0'
+  object Button1: TButton
+    Left = 8
+    Height = 25
+    Top = 88
+    Width = 208
+    Caption = 'Версия подключенной библиотеки'
+    OnClick = Button1Click
+    TabOrder = 11
+  end
+  object Label1: TLabel
+    Left = 8
+    Height = 16
+    Top = 8
+    Width = 11
+    Caption = '__'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 224
+    Height = 16
+    Top = 32
+    Width = 11
+    Caption = '__'
+    ParentColor = False
+  end
+  object Button2: TButton
+    Left = 8
+    Height = 25
+    Top = 120
+    Width = 72
+    Caption = 'Execute'
+    OnClick = Button2Click
+    TabOrder = 12
+  end
+  object Button3: TButton
+    Left = 8
+    Height = 25
+    Top = 152
+    Width = 72
+    Caption = 'Execute1'
+    OnClick = Button3Click
+    TabOrder = 13
+  end
+  object Button4: TButton
+    Left = 8
+    Height = 25
+    Top = 24
+    Width = 72
+    Caption = 'Load Lib'
+    OnClick = Button4Click
+    TabOrder = 9
+  end
+  object Button5: TButton
+    Left = 8
+    Height = 25
+    Top = 184
+    Width = 208
+    Caption = 'Free Lib'
+    OnClick = Button5Click
+    TabOrder = 14
+  end
+  object Label3: TLabel
+    Left = 224
+    Height = 16
+    Top = 97
+    Width = 11
+    Caption = '__'
+    ParentColor = False
+  end
+  object Label4: TLabel
+    Left = 224
+    Height = 16
+    Top = 129
+    Width = 11
+    Caption = '__'
+    ParentColor = False
+  end
+  object Label5: TLabel
+    Left = 224
+    Height = 16
+    Top = 160
+    Width = 11
+    Caption = '__'
+    ParentColor = False
+  end
+  object Label6: TLabel
+    Left = 224
+    Height = 16
+    Top = 192
+    Width = 11
+    Caption = '__'
+    ParentColor = False
+  end
+  object RadioButton1: TRadioButton
+    Left = 289
+    Height = 19
+    Top = 0
+    Width = 26
+    Caption = '1'
+    Checked = True
+    OnChange = RadioButton1Change
+    TabOrder = 0
+    TabStop = True
+  end
+  object RadioButton2: TRadioButton
+    Left = 320
+    Height = 19
+    Top = 0
+    Width = 26
+    Caption = '2'
+    OnChange = RadioButton2Change
+    TabOrder = 1
+  end
+  object RadioButton3: TRadioButton
+    Left = 352
+    Height = 19
+    Top = 0
+    Width = 26
+    Caption = '3'
+    OnChange = RadioButton3Change
+    TabOrder = 2
+  end
+  object RadioButton4: TRadioButton
+    Left = 384
+    Height = 19
+    Top = 0
+    Width = 26
+    Caption = '4'
+    OnChange = RadioButton4Change
+    TabOrder = 3
+  end
+  object RadioButton5: TRadioButton
+    Left = 416
+    Height = 19
+    Top = 0
+    Width = 26
+    Caption = '5'
+    OnChange = RadioButton5Change
+    TabOrder = 4
+  end
+  object RadioButton6: TRadioButton
+    Left = 448
+    Height = 19
+    Top = 0
+    Width = 26
+    Caption = '6'
+    OnChange = RadioButton6Change
+    TabOrder = 5
+  end
+  object RadioButton7: TRadioButton
+    Left = 480
+    Height = 19
+    Top = 0
+    Width = 26
+    Caption = '7'
+    OnChange = RadioButton7Change
+    TabOrder = 6
+  end
+  object RadioButton8: TRadioButton
+    Left = 512
+    Height = 19
+    Top = 0
+    Width = 26
+    Caption = '8'
+    OnChange = RadioButton8Change
+    TabOrder = 7
+  end
+  object RadioButton9: TRadioButton
+    Left = 544
+    Height = 19
+    Top = 0
+    Width = 26
+    Caption = '9'
+    OnChange = RadioButton9Change
+    TabOrder = 8
+  end
+  object Button6: TButton
+    Left = 8
+    Height = 25
+    Top = 56
+    Width = 208
+    Caption = 'Имя подключенной библиотеки'
+    OnClick = Button6Click
+    TabOrder = 10
+  end
+  object Label7: TLabel
+    Left = 224
+    Height = 16
+    Top = 65
+    Width = 11
+    Caption = '__'
+    ParentColor = False
+  end
+  object Edit1: TEdit
+    Left = 88
+    Height = 23
+    Top = 24
+    Width = 128
+    TabOrder = 15
+    Text = 'Имя DLL'
+  end
+  object Edit2: TEdit
+    Left = 88
+    Height = 23
+    Top = 120
+    Width = 128
+    TabOrder = 16
+    Text = 'параметр'
+  end
+  object Edit3: TEdit
+    Left = 88
+    Height = 23
+    Top = 152
+    Width = 128
+    TabOrder = 17
+    Text = 'параметр'
+  end
+end

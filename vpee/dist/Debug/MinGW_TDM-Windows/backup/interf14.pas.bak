@@ -1,0 +1,62 @@
+unit interf14;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls;
+
+type
+
+  { TForm14 }
+
+  TForm14 = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    ListBox1: TListBox;
+    OpenDialog1: TOpenDialog;
+    procedure Button1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    { private declarations }
+  public
+    { public declarations }
+  end;
+
+var
+  Form14: TForm14;
+  spisok_dlls:TStrings;
+
+implementation
+
+{$R *.lfm}
+
+{ TForm14 }
+
+procedure TForm14.Button1Click(Sender: TObject);
+begin
+  if OpenDialog1.Execute then
+  begin
+      for j:=0 to OpenDialog1.Files.Count-1 do
+      begin
+          //add_files_to_trasc_list(utf8tosys((OpenDialog1.Files.Strings[j])));
+          spisok_dlls.Add(utf8tosys((OpenDialog1.Files.Strings[j])));
+          form14.ListBox1.Items.Add(utf8tosys((OpenDialog1.Files.Strings[j])));
+      end;
+  end;
+end;
+
+procedure TForm14.FormCreate(Sender: TObject);
+begin
+  spisok_dlls:=TStrings.Create;
+end;
+
+end.
+

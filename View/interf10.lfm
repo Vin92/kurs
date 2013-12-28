@@ -1,0 +1,14 @@
+object Form10: TForm10
+  Left = 391
+  Height = 70
+  Top = 245
+  Width = 178
+  AlphaBlend = True
+  BorderStyle = bsNone
+  Caption = 'Form10'
+  Color = clGradientInactiveCaption
+  FormStyle = fsSystemStayOnTop
+  OnCreate = FormCreate
+  LCLVersion = '1.0.2.0'
+  Visible = True
+end
